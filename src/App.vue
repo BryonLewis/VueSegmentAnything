@@ -17,6 +17,3 @@ export default defineComponent({
 <template>
   <SAMImage />
 </template>
-
-<style scoped>
-</style>

@@ -16,7 +16,7 @@ const modelData = ({ hovered, tensor, modelScale }: modeDataProps) => {
 
   // Check there are input click prompts
   if (hovered) {
-    let n = hovered.length;
+    const n = hovered.length;
 
     // If there is no box input, a single padding point with 
     // label -1 and coordinates (0.0, 0.0) should be concatenated

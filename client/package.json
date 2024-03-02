@@ -15,17 +15,32 @@
     "lint:stylelint:fix": "stylelint --ignore-path .gitignore --fix src/**/*.{css,vue} index.html"
   },
   "dependencies": {
+    "@girder/oauth-client": "^0.8.0",
+    "@jamescoyle/vue-icon": "^0.1.2",
+    "@mdi/font": "^7.4.47",
+    "@mdi/js": "^7.4.47",
+    "@sentry/vue": "^6.16.1",
+    "@types/d3": "^7.4.0",
+    "axios": "^1.6.0",
+    "d3": "^7.8.5",
+    "django-s3-file-field": "^1.0.0",
+    "geojs": "^1.11.1",
+    "lodash": "^4.17.21",
     "@techstark/opencv-js": "^4.9.0-release.2",
     "@turf/turf": "7.0.0-alpha.113",
     "npyjs": "^0.6.0",
     "onnxruntime-web": "^1.17.0",
-    "vue": "^3.3.11"
+    "vue": "^3.3.11",
+    "vue-router": "^4.0.12",
+    "vuetify": "^3.3.12"
+
   },
   "devDependencies": {
     "@types/lodash": "^4.14.202",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "@vitejs/plugin-vue": "^4.5.2",
+    "@vuetify/vite-plugin": "^1.0.0-alpha.10",
     "eslint": "^8.20.0",
     "eslint-plugin-vue": "^9.2.0",
     "lodash": "^4.17.21",
@@ -42,6 +57,7 @@
     "vite-plugin-top-level-await": "^1.4.1",
     "vite-plugin-wasm": "^3.3.0",
     "vue-eslint-parser": "^9.0.3",
+    "vite-plugin-vuetify": "^1.0.2",
     "vue-tsc": "^1.8.27"
   },
   "//": "vue/no-setup-props-destructure is disabled in esLint, due to an issue with utilizing DefineProps: https://github.com/vuejs/eslint-plugin-vue/issues/2121",

@@ -1,5 +1,27 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+import '@mdi/font/css/materialdesignicons.css';
+import 'vuetify/styles';
+import { createApp, } from 'vue';
+import { createVuetify } from 'vuetify';
 
-createApp(App).mount('#app')
+import App from './App.vue';
+import oauthClient, { maybeRestoreLogin } from './plugins/Oauth';
+import initRouter from './router';
+import { axiosInstance } from './api/api';
+
+const app = createApp(App);
+const Vuetify = createVuetify({});
+
+maybeRestoreLogin().then(() => {
+  /*
+  The router must not be initialized until after the oauth flow is complete, because it
+  stores the initial history state at the time of its construction, and we don't want it
+  to capture that initial state until after we remove any OAuth response params from the URL.
+  */
+  const router = initRouter();
+
+  app.use(router);
+  app.use(Vuetify);
+  app.provide('oauthClient', oauthClient);
+  Object.assign(axiosInstance.defaults.headers.common, oauthClient.authHeaders);
+  app.mount('#app');
+});

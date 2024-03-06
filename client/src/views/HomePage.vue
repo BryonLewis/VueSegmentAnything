@@ -13,11 +13,11 @@ export default defineComponent({
 <template>
   <v-card>
     <v-card-title>
-      Bat-AI
+      VueSAM
     </v-card-title>
     <v-card-text class="ma-5">
       <p>
-        Please utilize the Help Icon <v-icon>mdi-help</v-icon> to get information about Shortcuts, Uploading, and creating Annotations.
+        This is a simple Sample app for testing SAM (Segment Anything Model) integration with Django and other annotation utilities
       </p>
     </v-card-text>
   </v-card>

@@ -56,7 +56,16 @@ setup(
         'librosa',
         'matplotlib',
         'numpy',
-        'opencv-python-headless',
+        # Segment Anything
+        'segment-anything',
+        'opencv-python',
+        'onnx',
+        'onnxruntime',
+        'torch',
+        'torchvision',
+    ],
+    dependency_links=[
+        'https://github.com/facebookresearch/segment-anything.git',
     ],
     extras_require={
         'dev': [

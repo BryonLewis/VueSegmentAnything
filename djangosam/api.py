@@ -3,6 +3,7 @@ import logging
 from ninja import NinjaAPI
 from oauth2_provider.models import AccessToken
 
+from djangosam.core.views import ImagesRouter
 
 logger = logging.getLogger(__name__)
 
@@ -22,4 +23,4 @@ def global_auth(request):
 
 
 api = NinjaAPI(auth=global_auth)
-
+api.add_router('/image/', ImagesRouter)

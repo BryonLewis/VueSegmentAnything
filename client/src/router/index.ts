@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import Login from '../views/Login.vue';
-
+import Images from '../views/Images.vue';
 import oauthClient from '../plugins/Oauth';
 
 function beforeEach(
@@ -31,7 +31,13 @@ function routerInit(){
         path: '/login',
         name: 'Login',
         component: Login,
-      },    ],
+      },
+      {
+        path: '/images',
+        name: 'Images',
+        component: Images,
+      },
+    ],
   });
   router.beforeEach(beforeEach);
   return router;

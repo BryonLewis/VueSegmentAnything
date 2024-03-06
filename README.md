@@ -33,9 +33,7 @@ maintenance. To non-destructively update your development stack at any time:
 2. Run `docker compose build --pull --no-cache`
 3. Run `docker compose run --rm django ./manage.py migrate`
 4. Run `docker compose run --rm django ./manage.py createsuperuser`
-5. Run `docker compose run --rm django ./manage.py loaddata species` to load species
-   data into the database
-6. Run  `docker compose run --rm django ./manage.py makeclient \
+5. Run  `docker compose run --rm django ./manage.py makeclient \
                             --username your.super.user@email.address \
                             --uri http://localhost:3000/`
 

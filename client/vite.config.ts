@@ -4,7 +4,7 @@ import topLevelAwait from "vite-plugin-top-level-await";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import path from 'path';
 import Vue from '@vitejs/plugin-vue';
-import Vuetify from '@vuetify/vite-plugin';
+import Vuetify from 'vite-plugin-vuetify';
 
 const wasmContentTypePlugin = {
   name: "wasm-content-type-plugin",
@@ -17,6 +17,7 @@ const wasmContentTypePlugin = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  envPrefix: 'VUE_APP_',
   plugins: [
     Vue(),
     Vuetify({

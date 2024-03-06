@@ -46,7 +46,7 @@ export default defineComponent({
       }
     });
 
-    return { oauthClient, containsSpectro, loginText, logInOrOut, activeTab, nextShared };
+    return { oauthClient, containsSpectro, loginText, logInOrOut, activeTab };
   },
 });
 </script>
@@ -55,7 +55,7 @@ export default defineComponent({
   <v-app id="app">
     <v-app-bar app>
       <v-tabs
-        v-if="oauthClient.isLoggedIn && activeTab"
+        v-if="oauthClient.isLoggedIn"
         v-model="activeTab"
         fixed-tabs
       >

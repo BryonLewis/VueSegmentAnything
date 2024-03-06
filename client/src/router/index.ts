@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router';
+import { createRouter, createWebHashHistory, RouteLocationNormalized } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import Login from '../views/Login.vue';
 import Images from '../views/Images.vue';
+import BasicSAM from '../views/BasicSAM.vue';
 import oauthClient from '../plugins/Oauth';
 
 function beforeEach(
@@ -21,7 +22,7 @@ function beforeEach(
 
 function routerInit(){
   const router  = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes: [
       {
         path: '/',
@@ -36,6 +37,12 @@ function routerInit(){
         path: '/images',
         name: 'Images',
         component: Images,
+      },
+      {
+        path: '/image/:imageId/basic_sam',
+        name: 'Image',
+        component: BasicSAM,
+        props: true,
       },
     ],
   });

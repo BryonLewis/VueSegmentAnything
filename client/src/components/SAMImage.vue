@@ -56,6 +56,7 @@ export default defineComponent({
           v-if="image"
           :src="image.src"
           class="full-width"
+          crossorigin="anonymous"
           @mousemove="handleMouse($event, 'hover')"
           @mouseout="mouseOut"
           @click="handleMouse($event, 'click')"
@@ -63,12 +64,14 @@ export default defineComponent({
         <img
           v-if="maskImg"
           :src="maskImg.src"
+          crossorigin="anonymous"
           class="full-width mask custom-styles"
         >
         <img
           v-for="(maskImage, index) in selectedMasks"
           :key="`image_${index}`"
           :src="maskImage.src"
+          crossorigin="anonymous"
           class="full-width selected-mask"
         >
         <canvas
@@ -123,3 +126,4 @@ export default defineComponent({
   pointer-events: none;
 }
 </style>
+../use/useSAM copy

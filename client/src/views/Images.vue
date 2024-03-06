@@ -32,7 +32,6 @@ export default defineComponent({
     const fetchImages = async () => {
         const images = await getImages();
         imageList.value = images.data;
-        console.log(imageList.value);
         // If we have a spectrogram being generated we need to refresh on an interval
     };
     onMounted(() => fetchImages());
@@ -95,7 +94,7 @@ export default defineComponent({
         <template #item.name="{ item }">
           <router-link
             v-if="item.presignedImageEmbedding"
-            :to="`/image/${item.id.toString()}/sam`"
+            :to="`/image/${item.id.toString()}/basic_sam`"
           >
             {{ item.name }}
           </router-link>

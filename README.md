@@ -32,10 +32,6 @@ maintenance. To non-destructively update your development stack at any time:
 1. Run `docker compose pull`
 2. Run `docker compose build --pull --no-cache`
 3. Run `docker compose run --rm django ./manage.py migrate`
-4. Run `docker compose run --rm django ./manage.py createsuperuser`
-5. Run  `docker compose run --rm django ./manage.py makeclient \
-                            --username your.super.user@email.address \
-                            --uri http://localhost:3000/`
 
 ## Develop Natively (advanced)
 

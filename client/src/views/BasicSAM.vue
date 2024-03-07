@@ -66,6 +66,3 @@ export default defineComponent({
     />
     </v-container>
 </template>
-
-<style scoped>
-</style>

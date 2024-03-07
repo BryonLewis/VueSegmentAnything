@@ -5,7 +5,6 @@ from django.http import HttpRequest
 from ninja import File, Form, Schema
 from ninja.files import UploadedFile
 from ninja.pagination import RouterPaginated
-from django.forms.models import model_to_dict
 
 from djangosam.core.models import Image
 from djangosam.core.tasks import generate_image_embedding
@@ -32,7 +31,6 @@ def get_images(request: HttpRequest):
 @router.get('/{id}/')
 def get_image(request: HttpRequest, id: int):
     filtered = list(Image.objects.filter(pk=id).values())
-    results = {}
     if len(filtered) > 0:
         image = filtered[0]
         image['presignedImage'] = default_storage.url(image['image'])

@@ -136,6 +136,3 @@ export default defineComponent({
     </v-dialog>
   </v-card>
 </template>
-
-<style scoped>
-</style>

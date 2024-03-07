@@ -3,6 +3,7 @@ import HomePage from '../views/HomePage.vue';
 import Login from '../views/Login.vue';
 import Images from '../views/Images.vue';
 import BasicSAM from '../views/BasicSAM.vue';
+import GeoJSViewer from '../views/GeoJSViewer.vue';
 import oauthClient from '../plugins/Oauth';
 
 function beforeEach(
@@ -42,6 +43,12 @@ function routerInit(){
         path: '/image/:imageId/basic_sam',
         name: 'Image',
         component: BasicSAM,
+        props: true,
+      },
+      {
+        path: '/image/:imageId/geojs_sam',
+        name: 'GeoJSViewer',
+        component: GeoJSViewer,
         props: true,
       },
     ],

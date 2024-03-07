@@ -10,7 +10,7 @@ import * as ort from "onnxruntime-web";
 
 import { InferenceSession, Tensor } from "onnxruntime-web";
 import { modelInputProps, modelScaleProps } from "./helpers/Interfaces";
-import { handleImageScale, handlePolyUnscale } from "./helpers/scaleHelper";
+import { handleImageScale} from "./helpers/scaleHelper";
 import {
   combinePolygons,
   convertImageToPoly,
@@ -44,23 +44,25 @@ async function fetchPresignedUrlAndConvertToArrayBuffer(
     throw error;
   }
 }
-// Interactive State for Components
-const hovered: Ref<modelInputProps[]> = ref([]);
-const clicks: Ref<modelInputProps[]> = ref([]);
-const image: Ref<HTMLImageElement | null> = ref(null);
-const maskImg: Ref<HTMLImageElement | null> = ref(null);
-const selectedMasks: Ref<HTMLImageElement[]> = ref([]);
-const polygons: Ref<GeoJSON.Polygon[]> = ref([]);
-const smoothing = ref(3);
 
-// Internal State for SAM
-const model: Ref<InferenceSession | null> = ref(null);
-const tensor: Ref<Tensor | null> = ref(null);
-const modelScale: Ref<modelScaleProps | null> = ref(null);
+function useSAMBase() {
+  // Interactive State for Components
+  const hovered: Ref<modelInputProps[]> = ref([]);
+  const clicks: Ref<modelInputProps[]> = ref([]);
+  const image: Ref<HTMLImageElement | null> = ref(null);
+  const maskImg: Ref<HTMLImageElement | null> = ref(null);
+  const selectedMasks: Ref<HTMLImageElement[]> = ref([]);
+  const polygons: Ref<GeoJSON.Polygon[]> = ref([]);
+  const smoothing = ref(3);
+  const enabled = ref(true);
 
-export default function useSAM() {
-  const baseDimensions = ref([0,0]);
-  const scaledDimensions = ref([0,0]);
+  // Internal State for SAM
+  const model: Ref<InferenceSession | null> = ref(null);
+  const tensor: Ref<Tensor | null> = ref(null);
+  const modelScale: Ref<modelScaleProps | null> = ref(null);
+  const drawPolygons = ref(true);
+
+  const baseDimensions = ref([0, 0]);
   const initModel = async (modelDIR?: string) => {
     const modelLocation = modelDIR || MODEL_DIR;
     try {
@@ -80,7 +82,6 @@ export default function useSAM() {
         baseDimensions.value = [img.naturalWidth, img.naturalHeight];
 
         const { height, width, samScale } = handleImageScale(img);
-        scaledDimensions.value = [width, height];
         modelScale.value = {
           height: height, // original image height
           width: width, // original image width
@@ -146,39 +147,16 @@ export default function useSAM() {
     }
   };
 
-  const scalePolyForExport = (poly: GeoJSON.Polygon) => {
-    const canvas = document.getElementById(
-      "geoJSONCanvas"
-    ) as HTMLCanvasElement;
-    const baseImage = document.getElementById(
-      "baseSAMImage"
-    ) as HTMLImageElement;
-
-    canvas.style.width = `${baseImage.clientWidth}px`;
-    canvas.style.height = `${baseImage.clientHeight}px`;
-    let width = 0;
-    let height = 0;
-    const masks = document.getElementsByClassName("selected-mask");
-    for (let i = 0; i < masks.length; i += 1) {
-      width = Math.max(masks[i].clientWidth, width);
-      height = Math.max(masks[i].clientHeight, height);
-    }
-    return handlePolyUnscale(selectedMasks.value[0].width, selectedMasks.value[0].height, width, height, poly)
-  }
-
   const processPolygons = () => {
+    if (!drawPolygons.value) {
+      return;
+    }
     if (selectedMasks.value.length === 0) {
       return;
     }
     const canvas = document.getElementById(
       "geoJSONCanvas"
     ) as HTMLCanvasElement;
-    const baseImage = document.getElementById(
-      "baseSAMImage"
-    ) as HTMLImageElement;
-
-    canvas.style.width = `${baseImage.clientWidth}px`;
-    canvas.style.height = `${baseImage.clientHeight}px`;
     let width = 0;
     let height = 0;
     const masks = document.getElementsByClassName("selected-mask");
@@ -186,8 +164,8 @@ export default function useSAM() {
       width = Math.max(masks[i].clientWidth, width);
       height = Math.max(masks[i].clientHeight, height);
     }
-    canvas.width = selectedMasks.value[0].width;
-    canvas.height = selectedMasks.value[0].height;
+    canvas.width = baseDimensions.value[0];
+    canvas.height = baseDimensions.value[1];
     canvas.style.height = `${height}px`;
     canvas.style.width = `${width}px`;
     const ctx = canvas.getContext("2d");
@@ -251,14 +229,16 @@ export default function useSAM() {
         "baseSAMImage"
       ) as HTMLImageElement;
       const tempCanvas = document.createElement("canvas") as HTMLCanvasElement;
-  
-      tempCanvas.style.width = `${baseImage.clientWidth}px`;
-      tempCanvas.style.height = `${baseImage.clientHeight}px`;
-      const width = selectedMasks.value[0].width;
-      const height = selectedMasks.value[0].height;
-      tempCanvas.width = width;
-      tempCanvas.height = height;
-  
+      const calcWidth = baseImage ? baseImage.clientWidth : baseDimensions.value[0];
+      const calcHeight = baseImage ? baseImage.clientHeight : baseDimensions.value[1];
+      tempCanvas.style.width = `${calcWidth}px`;
+      tempCanvas.style.height = `${calcHeight}px`;
+
+      tempCanvas.width = baseDimensions.value[0];
+      tempCanvas.height = baseDimensions.value[1];
+      tempCanvas.style.width = `${baseDimensions.value[0]}px`;
+      tempCanvas.style.height = `${baseDimensions.value[1]}px`;
+
       const ctx = tempCanvas.getContext("2d");
       if (ctx) {
         ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
@@ -268,7 +248,7 @@ export default function useSAM() {
           ctx.drawImage(image, 0, 0, tempCanvas.width, tempCanvas.height);
         }
       });
-      const mergedImage = new Image(width, height);
+      const mergedImage = new Image();
       mergedImage.src = tempCanvas.toDataURL();
       mergedImage.onload = async () => {
         const result = await convertImageToPoly(mergedImage, smoothing.value, true);
@@ -276,20 +256,19 @@ export default function useSAM() {
           if (result.length > 1) {
             const combined = combinePolygons(result);
             if (combined) {
-              polygons.value = [{
-                type: "Polygon",
-                coordinates: combined.geometry.coordinates,
-              }];
-              const unscaledPoly = scalePolyForExport(polygons.value[0]);
-              resolve(unscaledPoly);
+
+                polygons.value = [{
+                  type: "Polygon",
+                  coordinates: combined.geometry.coordinates,
+                }];
+                resolve(polygons.value[0])
             }
           } else {
-            polygons.value = [{
-              type: "Polygon",
-              coordinates: result[0].geometry.coordinates,
-            }];
-            const unscaledPoly = scalePolyForExport(polygons.value[0]);
-            resolve(unscaledPoly);
+              polygons.value = [{
+                type: "Polygon",
+                coordinates: result[0].geometry.coordinates,
+              }];
+              resolve(polygons.value[0]);
           }
         }
       };
@@ -298,7 +277,7 @@ export default function useSAM() {
       };
     });
   };
-  
+
 
   const undo = () => {
     if (selectedMasks.value.length) {
@@ -309,13 +288,15 @@ export default function useSAM() {
   const clearMasks = () => {
     if (selectedMasks.value.length) {
       selectedMasks.value = [];
-        if (polygons.value.length) {
+      if (polygons.value.length) {
         const canvas = document.getElementById(
           "geoJSONCanvas"
         ) as HTMLCanvasElement;
-        const ctx = canvas.getContext('2d')
-        if (ctx) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (canvas) {
+          const ctx = canvas.getContext('2d')
+          if (ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
         }
       }
       polygons.value = [];
@@ -345,6 +326,10 @@ export default function useSAM() {
     const yImageScale = image.value ? image.value.height / el.offsetHeight : 1;
     x *= xImageScale;
     y *= yImageScale;
+    handleMousePos(x, y, type);
+  }, 200);
+
+  const handleMousePos = (x: number, y: number, type: "hover" | "click") => {
     const newHover = getHover(x, y);
     if (type === "hover" && newHover && hovered.value) {
       hovered.value = [newHover];
@@ -352,7 +337,8 @@ export default function useSAM() {
     if (type === "click" && newHover && hovered.value) {
       clicks.value = [newHover];
     }
-  }, 200);
+  }
+
   const mouseOut = () => defer(() => (maskImg.value = null));
 
   // Watchers for changes
@@ -375,6 +361,7 @@ export default function useSAM() {
     undo,
     clearMasks,
     handleMouse,
+    handleMousePos,
     mouseOut,
     state: {
       image,
@@ -384,6 +371,15 @@ export default function useSAM() {
       polygons,
       selectedMasks,
       smoothing,
+      drawPolygons,
+      enabled,
     },
   };
 }
+
+const useSamData = useSAMBase();
+
+export default function useSAM() {
+  return useSamData
+};
+

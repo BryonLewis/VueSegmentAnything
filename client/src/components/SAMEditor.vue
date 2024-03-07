@@ -38,7 +38,7 @@ export default defineComponent({
       smoothing.value = e;
       const polygon = await updateSmoothing(smoothing.value);
       if (polygon) {
-        emit('updatePolygon',  polygon);
+        state.polygons.value = [polygon];
       }
 
     };
@@ -53,12 +53,13 @@ export default defineComponent({
     const generatePolys = async () => {
       const polygon = await convertMasksToPoly();
       if (polygons) {
-        emit('updatePolygon',  polygon);
+        state.polygons.value = [polygon];
       }
     }
 
     const clearPoly = () => {
       clearMasks();
+      state.polygons.value = [];
       emit('clear');
     }
 
@@ -66,6 +67,8 @@ export default defineComponent({
       clearMasks();
       emit('cancel');
     }
+
+
 
     return {
       image,

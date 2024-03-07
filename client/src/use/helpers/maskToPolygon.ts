@@ -120,14 +120,14 @@ export function drawGeoJSONPolygon(
   ctx.fillStyle = "blue"; // Circle fill color
   for (const coord of coordinates) {
     const [x, y] = coord;
-    const radius = sourceHeight * sourceWidth *.000002;; // Circle radius
+    const radius = 5; // Circle radius
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.fill();
   }
   // Draw lines connecting the circles
   ctx.strokeStyle = "red"; // Line color
-  ctx.lineWidth = sourceHeight * sourceWidth *.000002; // Line width
+  ctx.lineWidth = 10; // Line width
   ctx.beginPath();
   const firstCoord = coordinates[0];
   ctx.moveTo(firstCoord[0], firstCoord[1]);

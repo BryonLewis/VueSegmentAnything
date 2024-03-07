@@ -39,14 +39,8 @@ export default defineComponent({
       }
     });
     const activeTab = ref(route.path.includes("images") ? "images" : "");
-    const containsSpectro = computed(() => route.path.includes("images"));
-    watch(containsSpectro, () => {
-      if (route.path.includes("images")) {
-        activeTab.value = "images";
-      }
-    });
 
-    return { oauthClient, containsSpectro, loginText, logInOrOut, activeTab };
+    return { oauthClient, loginText, logInOrOut, activeTab };
   },
 });
 </script>

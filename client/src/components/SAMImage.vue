@@ -17,6 +17,14 @@ export default defineComponent({
       await initModel(MODEL_DIR);
       const url = new URL(IMAGE_PATH, location.origin);
       await loadImage(url, IMAGE_EMBEDDING);
+      const canvas = document.getElementById(
+      "geoJSONCanvas"
+    ) as HTMLCanvasElement;
+      if (image.value) {
+        canvas.width = image.value.width;
+        canvas.height = image.value.height;
+      }
+
     });
     const updateSmoothing = (e: Event) => {
       smoothing.value = parseInt((e.target as HTMLInputElement).value);

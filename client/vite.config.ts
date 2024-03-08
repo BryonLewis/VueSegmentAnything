@@ -26,7 +26,7 @@ export default defineConfig({
         server.middlewares.use((req, res, next) => {
           res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
           res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-          if (req.originalUrl.endsWith(".wasm")) {
+          if (req.originalUrl && req.originalUrl.endsWith(".wasm")) {
             res.setHeader("Content-Type", "application/wasm");
           }
           next();
@@ -48,8 +48,5 @@ export default defineConfig({
       },
     },
     strictPort: true,
-  },
-  alias: {
-    '@': path.resolve(__dirname, './src'),
   },
 });

@@ -16,7 +16,7 @@ export default defineComponent({
     onMounted(async () => {
       await initModel(MODEL_DIR);
       const url = new URL(IMAGE_PATH, location.origin);
-      await loadImage(url, IMAGE_EMBEDDING);
+      await loadImage(url as unknown as string, IMAGE_EMBEDDING);
       const canvas = document.getElementById(
       "geoJSONCanvas"
     ) as HTMLCanvasElement;

@@ -9,9 +9,9 @@
     "preview": "vite preview",
     "format": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --fix src",
     "lint:eslint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --no-fix src",
-    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --no-fix src & vue-tsc -noEmit",
+    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --no-fix src & vue-tsc -noEmit --skipLibCheck",
     "test": "jest",
-    "lint:typescript": "vue-tsc --noEmit"
+    "lint:typescript": "vue-tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "@girder/oauth-client": "^0.8.0",

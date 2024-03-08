@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, inject, ref, onMounted, computed, watch } from "vue";
+import { defineComponent, inject, onMounted, ref } from "vue";
 import OAuthClient from "@girder/oauth-client";
 import { useRoute, useRouter } from "vue-router";
 
@@ -39,14 +39,8 @@ export default defineComponent({
       }
     });
     const activeTab = ref(route.path.includes("images") ? "images" : "");
-    const containsSpectro = computed(() => route.path.includes("images"));
-    watch(containsSpectro, () => {
-      if (route.path.includes("images")) {
-        activeTab.value = "images";
-      }
-    });
 
-    return { oauthClient, containsSpectro, loginText, logInOrOut, activeTab };
+    return { oauthClient, loginText, logInOrOut, activeTab };
   },
 });
 </script>
@@ -84,7 +78,7 @@ export default defineComponent({
   </v-app>
 </template>
 
-<style >
+<style>
 html {
   overflow-y:hidden;
 }

@@ -16,7 +16,15 @@ export default defineComponent({
     onMounted(async () => {
       await initModel(MODEL_DIR);
       const url = new URL(IMAGE_PATH, location.origin);
-      await loadImage(url, IMAGE_EMBEDDING);
+      await loadImage(url as unknown as string, IMAGE_EMBEDDING);
+      const canvas = document.getElementById(
+      "geoJSONCanvas"
+    ) as HTMLCanvasElement;
+      if (image.value) {
+        canvas.width = image.value.width;
+        canvas.height = image.value.height;
+      }
+
     });
     const updateSmoothing = (e: Event) => {
       smoothing.value = parseInt((e.target as HTMLInputElement).value);
@@ -56,6 +64,7 @@ export default defineComponent({
           v-if="image"
           :src="image.src"
           class="full-width"
+          crossorigin="anonymous"
           @mousemove="handleMouse($event, 'hover')"
           @mouseout="mouseOut"
           @click="handleMouse($event, 'click')"
@@ -63,12 +72,14 @@ export default defineComponent({
         <img
           v-if="maskImg"
           :src="maskImg.src"
+          crossorigin="anonymous"
           class="full-width mask custom-styles"
         >
         <img
           v-for="(maskImage, index) in selectedMasks"
           :key="`image_${index}`"
           :src="maskImage.src"
+          crossorigin="anonymous"
           class="full-width selected-mask"
         >
         <canvas
@@ -123,3 +134,4 @@ export default defineComponent({
   pointer-events: none;
 }
 </style>
+../use/useSAM copy

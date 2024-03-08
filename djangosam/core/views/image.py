@@ -28,6 +28,19 @@ def get_images(request: HttpRequest):
     return images
 
 
+@router.get('/{id}/')
+def get_image(request: HttpRequest, id: int):
+    filtered = list(Image.objects.filter(pk=id).values())
+    if len(filtered) > 0:
+        image = filtered[0]
+        image['presignedImage'] = default_storage.url(image['image'])
+        if image.get('image_embedding', False):
+            image['presignedImageEmbedding'] = default_storage.url(image['image_embedding'])
+
+        return image
+    return False
+
+
 class ImageUploadSchema(Schema):
     name: str
 

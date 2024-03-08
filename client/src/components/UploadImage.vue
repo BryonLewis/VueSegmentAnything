@@ -1,14 +1,10 @@
 <script lang="ts">
-import { defineComponent, PropType, ref, Ref } from 'vue';
+import { Ref, defineComponent, ref } from 'vue';
 import { ImageMimeTypes } from '../constants';
 import useRequest from '../use/useRequest';
 import { uploadImageFile } from '../api/api';
 
 export default defineComponent({
-  components: {
-  },
-  props: {
-  },
   emits: ['done', 'cancel'],
   setup(props, { emit }) {
     const fileInputEl: Ref<HTMLInputElement | null> = ref(null);

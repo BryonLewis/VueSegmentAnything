@@ -24,6 +24,11 @@ async function getImages() {
     return axiosInstance.get<VueSamImage[]>(`/image/`);
 }
 
+async function getImage(imageId: string) {
+    return axiosInstance.get<VueSamImage>(`/image/${imageId}/`);
+
+}
+
 async function uploadImageFile(file: File, name: string ) {
     const formData = new FormData();
     formData.append('image', file);
@@ -54,6 +59,7 @@ async function uploadImageFile(file: File, name: string ) {
 
 export {
  getImages,
+ getImage,
  uploadImageFile,
  deleteImage,
 };

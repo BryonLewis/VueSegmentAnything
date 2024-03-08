@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, Ref, onMounted } from 'vue';
+import { Ref, defineComponent, onMounted, ref } from 'vue';
 import { VueSamImage, deleteImage, getImages,  } from '../api/api';
 import UploadImage from '../components/UploadImage.vue';
 
@@ -10,7 +10,6 @@ export default defineComponent({
   setup() {
     const itemsPerPage = ref(-1);
     const imageList: Ref<VueSamImage[]> = ref([]);
-    let intervalRef: number | null = null;
 
     const uploadDialog = ref(false);
     const headers = ref([
@@ -32,8 +31,6 @@ export default defineComponent({
     const fetchImages = async () => {
         const images = await getImages();
         imageList.value = images.data;
-        console.log(imageList.value);
-        // If we have a spectrogram being generated we need to refresh on an interval
     };
     onMounted(() => fetchImages());
 
@@ -95,9 +92,17 @@ export default defineComponent({
         <template #item.name="{ item }">
           <router-link
             v-if="item.presignedImageEmbedding"
-            :to="`/image/${item.id.toString()}/sam`"
+            :to="`/image/${item.id.toString()}/basic_sam`"
+            class="px-2"
           >
             {{ item.name }}
+          </router-link>
+          <router-link
+            v-if="item.presignedImageEmbedding"
+            :to="`/image/${item.id.toString()}/geojs_sam`"
+            class="px-2"
+          >
+            GeoJS
           </router-link>
           <div v-else>
             {{ item.name }} 
@@ -113,8 +118,12 @@ export default defineComponent({
           </div>
         </template>
         <template #item.presignedImage="{ item }">
-          <img :src="item.presignedImage" width="200" crossorigin="anonymous" />
-          </template>
+          <img
+            :src="item.presignedImage"
+            width="200"
+            crossorigin="anonymous"
+          >
+        </template>
 
         <template #bottom />
       </v-data-table>
@@ -130,6 +139,3 @@ export default defineComponent({
     </v-dialog>
   </v-card>
 </template>
-
-<style scoped>
-</style>

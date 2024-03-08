@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, onMounted, PropType, ref, Ref, watch } from "vue";
+import { PropType, Ref, defineComponent, onMounted, ref, watch } from "vue";
 import { useGeoJS } from "../components/geoJS/geoJSUtils";
 import LayerManager from "../components/geoJS/LayerManager.vue";
 import { GeoEvent } from "geojs";
@@ -110,7 +110,7 @@ export default defineComponent({
 
                 }
             }
-        }
+        };
 
         onMounted(() => {
             state.enabled.value = true;
@@ -120,15 +120,15 @@ export default defineComponent({
         const cancel = () => {
             clearMasks();
             emit('cancel');
-        }
+        };
         const generatePolys = async () => {
             await convertMasksToPoly();
-        }
+        };
 
         const clearPoly = () => {
             clearMasks();
             emit('clear');
-        }
+        };
 
         const adjustSmoothing = async (e: number) => {
             smoothing.value = e;
@@ -163,35 +163,77 @@ export default defineComponent({
 </script>
 
 <template>
-    <v-row class="py-6">
-        <v-btn size="small" color="error" class="mx-2" @click="cancel()">
-            Cancel
-        </v-btn>
-        <v-btn v-if="selectedMasks.length" size="small" class="mx-2" @click="undo()">
-            Undo
-        </v-btn>
-        <v-btn v-if="selectedMasks.length" size="small" class="mx-2" @click="clearPoly()">
-            Clear
-        </v-btn>
-        <v-btn v-if="selectedMasks.length" size="small" class="mx-2" :disabled="!selectedMasks.length"
-            @click="generatePolys()">
-            generate
-        </v-btn>
-        <v-slider v-if="polygons.length" :model-value="smoothing" min="0" max="30" step="1"
-            :label="`Smoothness: ${smoothing}`" color="primary" thumb-label density="compact"
-            @end="adjustSmoothing($event)" />
-    </v-row>
-    <div class="video-annotator">
-        <div id="geoJSViewer" ref="containerRef" class="playback-container" :style="{ cursor: cursor }"
-            @mousemove="cursorHandler.handleMouseMove" @mouseleave="cursorHandler.handleMouseLeave"
-            @mouseover="cursorHandler.handleMouseEnter" />
-        <layer-manager v-if="initialized" :geo-viewer-ref="geoViewerRef" @set-cursor="setCursor($event)" />
-        <div ref="imageCursorRef" class="imageCursor">
-            <v-icon color="white">
-                {{ cursor }}
-            </v-icon>
-        </div>
+  <v-row class="py-6">
+    <v-btn
+      size="small"
+      color="error"
+      class="mx-2"
+      @click="cancel()"
+    >
+      Cancel
+    </v-btn>
+    <v-btn
+      v-if="selectedMasks.length"
+      size="small"
+      class="mx-2"
+      @click="undo()"
+    >
+      Undo
+    </v-btn>
+    <v-btn
+      v-if="selectedMasks.length"
+      size="small"
+      class="mx-2"
+      @click="clearPoly()"
+    >
+      Clear
+    </v-btn>
+    <v-btn
+      v-if="selectedMasks.length"
+      size="small"
+      class="mx-2"
+      :disabled="!selectedMasks.length"
+      @click="generatePolys()"
+    >
+      generate
+    </v-btn>
+    <v-slider
+      v-if="polygons.length"
+      :model-value="smoothing"
+      min="0"
+      max="30"
+      step="1"
+      :label="`Smoothness: ${smoothing}`"
+      color="primary"
+      thumb-label
+      density="compact"
+      @end="adjustSmoothing($event)"
+    />
+  </v-row>
+  <div class="video-annotator">
+    <div
+      id="geoJSViewer"
+      ref="containerRef"
+      class="playback-container"
+      :style="{ cursor: cursor }"
+      @mousemove="cursorHandler.handleMouseMove"
+      @mouseleave="cursorHandler.handleMouseLeave"
+      @mouseover="cursorHandler.handleMouseEnter"
+    />
+    <layer-manager
+      v-if="initialized"
+      :geo-viewer-ref="geoViewerRef"
+      @set-cursor="setCursor($event)"
+    />
+    <div
+      ref="imageCursorRef"
+      class="imageCursor"
+    >
+      <v-icon color="white">
+        {{ cursor }}
+      </v-icon>
     </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

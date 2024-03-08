@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, inject, ref, onMounted, computed, watch } from "vue";
+import { defineComponent, inject, onMounted, ref } from "vue";
 import OAuthClient from "@girder/oauth-client";
 import { useRoute, useRouter } from "vue-router";
 
@@ -78,7 +78,7 @@ export default defineComponent({
   </v-app>
 </template>
 
-<style >
+<style>
 html {
   overflow-y:hidden;
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, onUnmounted, PropType, Ref, ref, watch } from "vue";
+import { PropType, defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
 import EditAnnotationLayer from "./layers/editAnnotationLayer";
 import ImageLayer from "./layers/imageLayer";
 import useSAM from "../../use/useSAM";
@@ -61,7 +61,7 @@ export default defineComponent({
         editAnnotationLayer.disable();
         state.enabled.value = true;
       }
-      let combinedMasks = []
+      let combinedMasks = [];
       if (state.maskImg.value) {
         combinedMasks.push(state.maskImg.value);
       }
@@ -88,10 +88,10 @@ export default defineComponent({
 
     watch(() => state.maskImg.value, () => {
       triggerUpdate();
-    })
+    });
     watch(() => state.selectedMasks.value.length, () => {
       triggerUpdate();
-    })
+    });
 
     watch(() => state.polygons.value, () => {
       triggerUpdate();

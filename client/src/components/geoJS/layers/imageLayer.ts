@@ -65,8 +65,8 @@ export default class ImageLayer {
         ul: {x: 0, y: 0},
         lr: {x: dimensions.width, y: dimensions.height},
         image: image,
-      })
-    })
+      });
+    });
     this.formattedData = arr;
     this.redraw();
   }

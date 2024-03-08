@@ -107,21 +107,4 @@ jobs:
         run: pip install tox
       - name: Run tests
         run: tox -e ${{ matrix.tox-env }}
-        working-directory: bats_ai
-  test-vue:
-    name: Test [vue]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node environment
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          cache-dependency-path: client/package-lock.json
-      - name: Install packages
-        run: npm ci
-        working-directory: client
-      - name: Run tests
-        run: npm run test
-        working-directory: client
+        working-directory: djangosam

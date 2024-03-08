@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, Ref, onMounted } from 'vue';
+import { Ref, defineComponent, onMounted, ref } from 'vue';
 import { VueSamImage, deleteImage, getImages,  } from '../api/api';
 import UploadImage from '../components/UploadImage.vue';
 
@@ -10,7 +10,6 @@ export default defineComponent({
   setup() {
     const itemsPerPage = ref(-1);
     const imageList: Ref<VueSamImage[]> = ref([]);
-    let intervalRef: number | null = null;
 
     const uploadDialog = ref(false);
     const headers = ref([
@@ -119,8 +118,12 @@ export default defineComponent({
           </div>
         </template>
         <template #item.presignedImage="{ item }">
-          <img :src="item.presignedImage" width="200" crossorigin="anonymous" />
-          </template>
+          <img
+            :src="item.presignedImage"
+            width="200"
+            crossorigin="anonymous"
+          >
+        </template>
 
         <template #bottom />
       </v-data-table>

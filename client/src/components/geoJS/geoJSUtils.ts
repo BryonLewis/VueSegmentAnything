@@ -1,4 +1,4 @@
-import { ref, Ref } from "vue";
+import { Ref, ref } from "vue";
 import geo from "geojs";
 
 const useGeoJS = () => {
@@ -181,20 +181,6 @@ const useGeoJS = () => {
     resetZoom,
   };
 };
-
-
-
-
-function findPolygonCenter(polygon: GeoJSON.Polygon): number[] {
-  const coordinates = polygon.coordinates[0]; // Extract the exterior ring coordinates
-
-  // Calculate the average of longitude and latitude separately
-  const avgLng = coordinates.reduce((sum, point) => sum + point[0], 0) / coordinates.length;
-  const avgLat = coordinates.reduce((sum, point) => sum + point[1], 0) / coordinates.length;
-
-  return [avgLng, avgLat];
-}
-
 
 
 /**

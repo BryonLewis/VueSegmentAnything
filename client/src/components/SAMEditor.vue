@@ -48,25 +48,25 @@ export default defineComponent({
         return (image.value.width > image.value.height);
       }
       return false;
-    })
+    });
 
     const generatePolys = async () => {
       const polygon = await convertMasksToPoly();
       if (polygons) {
         state.polygons.value = [polygon];
       }
-    }
+    };
 
     const clearPoly = () => {
       clearMasks();
       state.polygons.value = [];
       emit('clear');
-    }
+    };
 
     const cancel = () => {
       clearMasks();
       emit('cancel');
-    }
+    };
 
 
 

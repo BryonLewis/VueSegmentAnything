@@ -261,7 +261,7 @@ function useSAMBase() {
                   type: "Polygon",
                   coordinates: combined.geometry.coordinates,
                 }];
-                resolve(polygons.value[0])
+                resolve(polygons.value[0]);
             }
           } else {
               polygons.value = [{
@@ -293,7 +293,7 @@ function useSAMBase() {
           "geoJSONCanvas"
         ) as HTMLCanvasElement;
         if (canvas) {
-          const ctx = canvas.getContext('2d')
+          const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
           }
@@ -337,7 +337,7 @@ function useSAMBase() {
     if (type === "click" && newHover && hovered.value) {
       clicks.value = [newHover];
     }
-  }
+  };
 
   const mouseOut = () => defer(() => (maskImg.value = null));
 
@@ -380,6 +380,6 @@ function useSAMBase() {
 const useSamData = useSAMBase();
 
 export default function useSAM() {
-  return useSamData
-};
+  return useSamData;
+}
 

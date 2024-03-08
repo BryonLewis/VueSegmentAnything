@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, Ref, onMounted, watch } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import SAMEditor from '../components/SAMEditor.vue';
 import { getImage } from '../api/api';
 import { useRouter } from 'vue-router';
@@ -27,20 +27,20 @@ export default defineComponent({
             embeddingURL.value = req.data.presignedImageEmbedding;
             imageURL.value = req.data.presignedImage;
         }
-    }
+    };
 
     onMounted(() =>{
-        const div = document.getElementById('sam-container')
+        const div = document.getElementById('sam-container');
         if (div) {
             width.value = div.clientWidth*0.80;
             height.value = window.innerHeight*0.80 - 70;
         }
         getData();
-    })
+    });
 
     const cancel = () => {
         router.push('/images');
-    }
+    };
 
 
     return {
@@ -55,14 +55,14 @@ export default defineComponent({
 </script>
 
 <template>
-    <v-container id="sam-container">
+  <v-container id="sam-container">
     <SAMEditor
-    v-if="embeddingURL && imageURL"
-    :embeddingURL="embeddingURL"
-    :imageUrl="imageURL"
-    :width="width"
-    :height="height"
-    @cancel="cancel()"
+      v-if="embeddingURL && imageURL"
+      :embedding-u-r-l="embeddingURL"
+      :image-url="imageURL"
+      :width="width"
+      :height="height"
+      @cancel="cancel()"
     />
-    </v-container>
+  </v-container>
 </template>

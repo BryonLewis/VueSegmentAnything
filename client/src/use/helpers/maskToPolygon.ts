@@ -102,8 +102,8 @@ function contourToGeoJSON(contour: cv.Mat, smoothing = 3) {
 export function drawGeoJSONPolygon(
   ctx: CanvasRenderingContext2D,
   geoJSONPolygon: GeoJSON.Polygon,
-  sourceWidth: number,
-  sourceHeight: number,
+  _sourceWidth: number,
+  _sourceHeight: number,
 ) {
   if (
     !ctx ||
